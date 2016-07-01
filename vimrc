@@ -15,7 +15,6 @@ Plugin 'gmarik/Vundle.vim'
 " General Plugins {{{
 Plugin 'bling/vim-airline'
 Plugin 'dongweiming/vary.vim'
-Plugin 'dyng/ctrlsf.vim'
 Plugin 'honza/vim-snippets'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
@@ -31,8 +30,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/AutoClose'
 Plugin 'vim-scripts/matchit.zip'
 Plugin 'vim-scripts/taglist.vim'
+Plugin 'vim-scripts/OmniCppComplete'
 Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
 " }}}
 
 " Colors {{{
@@ -50,16 +49,11 @@ Plugin 'vim-scripts/a.vim'
 Plugin 'vim-scripts/c.vim'
 " HTML
 Plugin 'mattn/emmet-vim'
-" JSON
-Plugin 'axiaoxin/vim-json-line-format'
 " Markdown
 Plugin 'suan/vim-instant-markdown'
 " Python
 Plugin 'davidhalter/jedi-vim'
-Plugin 'nvie/vim-flake8'
 Plugin 'vim-scripts/python_match.vim'
-" Nginx
-Plugin 'file:///Users/fj/hgroot/nginx/contrib/nginx.vim'
 " HTML & JS
 Plugin 'maksimr/vim-jsbeautify'
 " }}}
@@ -119,7 +113,6 @@ set ignorecase
 set smartcase
 set incsearch
 set listchars=tab:>.,eol:$
-set noerrorbells
 set number
 set printoptions=left:8pc,right:3pc        " print options
 set ruler
@@ -141,7 +134,7 @@ set smarttab
 set shiftwidth=4   " If smarttab is set, tab at the head of a line will insert shiftwidth, other place use tabstop or softtabstop
 set softtabstop=4  " In my vim, a tab is 8 whitespace,  and back space can delete a tab(8 whitespace together)
 set tabstop=4      " In other editor, tab is 8 whitespace  XXX: Change this option!!!
-set expandtab      " Tab is replaced by whitespaces. To insert a really tab, press C-Q<Tab> in Windows or C-V<Tab> in Linux 
+set expandtab      " Tab is replaced by whitespaces. To insert a really tab, press C-Q<Tab> in Windows or C-V<Tab> in Linux
 set autoindent
 set smartindent
 set textwidth=0
@@ -155,10 +148,10 @@ set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
 "set langmenu=zh_CN.UTF-8
 set helplang=cn
 " Linux
-"set guifont=YaHei\ Consolas\ Hybrid\ 12
+set guifont=YaHei\ Consolas\ Hybrid\ 12
 "set guifont=Monaco\ 14
 " Mac
-set guifont=Menlo:h15
+"set guifont=Menlo:h15
 " Windows
 "set guifont=Courier\ 10\ Pitch\ 9
 "set guifont=Monospace\ 11
@@ -170,16 +163,16 @@ set noswapfile
 
 " Nice statusbar
 set laststatus=2
-set statusline=
-set statusline+=%2*%-3.3n%0*\  " Buffer number
-set statusline+=%f\            " File name
-set statusline+=%h%1*%m%r%w%0* " Flags
-set statusline+=\[%{strlen(&ft)?&ft:'none'},  " Filetype
-set statusline+=%{&encoding},  " Encoding
-set statusline+=%{&fileformat}]  " File format
-set statusline+=%=                           " Right align
-set statusline+=%2*0x%-8B\                   " Current char
-set statusline+=%-14.(%l,%c%V%)\ %<%P        " Offset
+"set statusline=
+"set statusline+=%2*%-3.3n%0*\  " Buffer number
+"set statusline+=%f\            " File name
+"set statusline+=%h%1*%m%r%w%0* " Flags
+"set statusline+=\[%{strlen(&ft)?&ft:'none'},  " Filetype
+"set statusline+=%{&encoding},  " Encoding
+"set statusline+=%{&fileformat}]  " File format
+"set statusline+=%=                           " Right align
+"set statusline+=%2*0x%-8B\                   " Current char
+"set statusline+=%-14.(%l,%c%V%)\ %<%P        " Offset
 
 " Special statusbar for special windows
 if has("autocmd")
@@ -238,8 +231,8 @@ map <silent> <leader>ee :e! ~/.vimrc<CR>
 " Fast reloading of .vimrc
 map <silent> <leader>ss :source ~/.vimrc<CR>
 " Indent
-vmap <Tab> >gv
-vmap <S-Tab> <gv
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 " Fast saving
 map <silent> <leader>w :w!<CR>
 " close window (conflicts with the KDE setting for calling the process manager)
@@ -268,10 +261,11 @@ map <C-l> <C-W>l
 " Make space in normal mode go down a page
 noremap <space> <c-f>
 
-" Function key maps 
+" Function key maps
 vnoremap <F2> "+y
 noremap <F3> <Esc>"+p
 inoremap <F3> <Esc><Esc>"+p
+noremap <F5> :%s/$//g<CR>
 noremap <silent> <F9>  <Esc>:SyntasticCheck<CR>
 inoremap <silent> <F9>  <Esc><Esc>:SyntasticCheck<CR>
 noremap <silent> <F10>  <Esc>:NERDTree<CR>
@@ -350,7 +344,7 @@ autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " Indentation in different file types
 autocmd FileType python setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
-autocmd FileType cpp setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 noexpandtab
+autocmd FileType cpp setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
 autocmd FileType c setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
 autocmd FileType xml setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
 autocmd FileType java setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
@@ -388,6 +382,37 @@ let g:airline_mode_map = {
     \ '' : 'S',
     \ }
 " }}}
+" c.vim {{{
+let g:C_Ctrl_j = 'off'
+" }}}
+" OmniCppComplete {{{
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+set completeopt=menu,menuone
+
+let OmniCpp_GlobalScopeSearch = 1 "default
+let OmniCpp_NamespaceSearch = 2
+let OmniCpp_DisplayMode = 0 "default
+let OmniCpp_ShowScopeInAbbr = 1
+let OmniCpp_ShowPrototypeInAbbr = 1
+let OmniCpp_ShowAccess = 1 "default
+let OmniCpp_MayCompleteDot = 1 "default
+let OmniCpp_MayCompleteArrow = 1 "default
+let OmniCpp_MayCompleteScope = 1
+let OmniCpp_SelectFirstItem = 2
+let OmniCpp_LocalSearchDecl = 1
+
+"Setup the tab key to do autocompletion
+function! CompleteTab()
+  let prec = strpart( getline('.'), 0, col('.')-1 )
+  if prec =~ '^\s*$' || prec =~ '\s$'
+    return "\<tab>"
+  else
+    return "\<c-x>\<c-o>"
+  endif
+endfunction
+"inoremap <tab> <c-r>=CompleteTab()<cr>
+" }}}
 " TagList {{{
 let Tlist_GainFocus_On_ToggleOpen = 1
 let Tlist_Close_On_Select = 0
@@ -403,9 +428,9 @@ let g:auto_striptrail = "python,c,cpp,java,php,html"
 "let g:auto_striptab = "python,ruby,cpp"
 " }}}
 " ultisnips {{{
-let g:UltiSnipsExpandTrigger = "<a-tab>"
-let g:UltiSnipsJumpForwardTrigger = "<a-tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
+"let g:UltiSnipsExpandTrigger = "<a-tab>"
+"let g:UltiSnipsJumpForwardTrigger = "<a-tab>"
+"let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 let g:UltiSnipsEditSplit = "vertical"
 " }}}
 " YCM {{{
@@ -442,7 +467,7 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 inoremap  <buffer>  /*       /*<Space><Space>*/<Left><Left><Left>
 vnoremap  <buffer>  /*      s/*<Space><Space>*/<Left><Left><Left><Esc>p
 "-------------------------------------------------------------------------------
-" additional mapping : complete a classical C multi-line comment: 
+" additional mapping : complete a classical C multi-line comment:
 "                      '/*<CR>' =>  /*
 "                                    * |
 "                                    */
