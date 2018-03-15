@@ -14,7 +14,7 @@ Plugin 'gmarik/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end
 " General Plugins {{{
 Plugin 'bling/vim-airline'
-Plugin 'dongweiming/vary.vim'
+Plugin 'J-Feng/vary.vim'
 Plugin 'honza/vim-snippets'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
@@ -32,6 +32,8 @@ Plugin 'vim-scripts/matchit.zip'
 Plugin 'vim-scripts/taglist.vim'
 Plugin 'vim-scripts/OmniCppComplete'
 Plugin 'SirVer/ultisnips'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'J-Feng/myvimfiles'
 " }}}
 
 " Colors {{{
@@ -49,8 +51,6 @@ Plugin 'vim-scripts/a.vim'
 Plugin 'vim-scripts/c.vim'
 " HTML
 Plugin 'mattn/emmet-vim'
-" Markdown
-Plugin 'suan/vim-instant-markdown'
 " Python
 Plugin 'davidhalter/jedi-vim'
 Plugin 'vim-scripts/python_match.vim'
@@ -123,6 +123,9 @@ set novisualbell
 set noerrorbells
 set t_vb=
 set t_Co=256
+if !has("gui_running")
+    set term=xterm-256color
+endif
 set showcmd
 set wildignore=*.bak,*.o,*.e,*~    " when completion, ignore these extensions
 set wildmenu                       " enhanced mode command-line completion
@@ -144,9 +147,9 @@ set splitbelow
 
 "set cursorline
 "set enc=utf-8
-set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+set fencs=ucs-bom,utf-8,cp936,gb2312,gb18030,gbk,big5,euc-jp,euc-kr,shift-jis,latin1
 "set langmenu=zh_CN.UTF-8
-set helplang=cn
+"set helplang=cn
 " Linux
 set guifont=YaHei\ Consolas\ Hybrid\ 12
 "set guifont=Monaco\ 14
@@ -231,8 +234,8 @@ map <silent> <leader>ee :e! ~/.vimrc<CR>
 " Fast reloading of .vimrc
 map <silent> <leader>ss :source ~/.vimrc<CR>
 " Indent
-vnoremap <Tab> >gv
-vnoremap <S-Tab> <gv
+vmap <Tab> >gv
+vmap <S-Tab> <gv
 " Fast saving
 map <silent> <leader>w :w!<CR>
 " close window (conflicts with the KDE setting for calling the process manager)
@@ -275,7 +278,7 @@ inoremap <silent> <F11>  <Esc><Esc>:Tlist<CR>
 noremap <silent> <F12>  <Esc>:Tagbar<CR>
 inoremap <silent> <F12>  <Esc><Esc>:Tagbar<CR>
 "map <C-F12> :!ctags -R --c-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*<CR>
-map <C-F12> :!ctags --languages=c --langmap=c:+.c:+.h -R --c-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*<CR>
+map <C-F12> :!ctags --languages=c,c++ --langmap=c:+.h -R --c-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*<CR>
 " cscope
 nmap <C-\><C-]> :cstag <C-R>=expand("<cword>")<CR><CR>
 " 's'   symbol: find all references to the token under cursor
@@ -342,12 +345,6 @@ endif
 " Reload vimrc when it is edited
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
-" Indentation in different file types
-autocmd FileType python setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
-autocmd FileType cpp setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
-autocmd FileType c setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
-autocmd FileType xml setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
-autocmd FileType java setlocal smarttab shiftwidth=4 softtabstop=4 tabstop=4 expandtab
 autocmd FileType text set syntax=txt
 autocmd bufNewFile,BufRead set tags+=./tags
 " For input method auto switch
@@ -356,7 +353,7 @@ autocmd! InsertEnter * set noimdisable|set iminsert=0
 " }}}
 
 " Abbreviations {{{
-iab zhdate <c-r>=strftime("%F %a %T")<cr>
+iab zhdate <c-r>=strftime("%F %T")<cr>
 iab endate <c-r>=strftime("%a %b %d %Y %T")<cr>
 " }}}
 
@@ -384,6 +381,7 @@ let g:airline_mode_map = {
 " }}}
 " c.vim {{{
 let g:C_Ctrl_j = 'off'
+"let g:C_Styles = {'*.c,*.h' : 'default', '*.cc,*.cpp,*.hh,*.hpp' : 'CPP'}
 " }}}
 " OmniCppComplete {{{
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -438,11 +436,12 @@ nnoremap <leader>ygd :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>ygi :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>ygg :YcmCompleter GoToDefinitionElseDeclaration<CR>
 "let g:ycm_min_num_of_chars_for_completion = 99
-"let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-let g:ycm_key_invoke_completion = '<C-x>'
+"let g:ycm_key_invoke_completion = '<C-x>'
 let g:ycm_warning_symbol = ">*"
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
+let g:ycm_filetype_writelist = {'cpp': 1}
 " }}}
 " jedi-vim {{{
 let g:jedi#completions_enabled = 0
@@ -459,6 +458,10 @@ nmap     <C-F>p <Plug>CtrlSFPwordPath
 nnoremap <C-F>o :CtrlSFOpen<CR>
 nnoremap <C-F>t :CtrlSFToggle<CR>
 inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
+" }}}
+" NERDTree {{{
+let g:NERDTreeDirArrowExpandable="+"
+let g:NERDTreeDirArrowCollapsible="~"
 " }}}
 " Copy from c.vim {{{
 "-------------------------------------------------------------------------------
@@ -480,4 +483,8 @@ inoremap  <buffer>  {<CR>    {<CR>}<Esc>O
 vnoremap  <buffer>  {<CR>   S{<CR>}<Esc>Pk=iB
 " }}}
 inoremap <buffer> {{{    {{{<CR>}}}<Esc>O
+" User defined commands
+"command! GenTags :!ctags -R --c-kinds=+p --fields=+iaS --extra=+q -f $PWD/tags `find $PWD | egrep ".*\.(cpp|h)$"`<CR>
+command! GenTags :!ctags --languages=c,c++ --langmap=c:+.h -R --c-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*
+command! StripTrailing :%s/\s\+$//g
 " vim:ft=vim:ts=4:sw=4:sts=4:et:fen:fdm=marker:fmr={{{,}}}:fdl=2
