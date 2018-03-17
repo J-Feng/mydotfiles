@@ -234,8 +234,8 @@ map <silent> <leader>ee :e! ~/.vimrc<CR>
 " Fast reloading of .vimrc
 map <silent> <leader>ss :source ~/.vimrc<CR>
 " Indent
-vmap <Tab> >gv
-vmap <S-Tab> <gv
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
 " Fast saving
 map <silent> <leader>w :w!<CR>
 " close window (conflicts with the KDE setting for calling the process manager)
