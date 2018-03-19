@@ -14,7 +14,9 @@ Plugin 'gmarik/Vundle.vim'
 " Keep Plugin commands between vundle#begin/end
 " General Plugins {{{
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'J-Feng/vary.vim'
+Plugin 'dyng/ctrlsf.vim'
 Plugin 'honza/vim-snippets'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
@@ -23,16 +25,16 @@ Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
 Plugin 'sheerun/vim-polyglot'
-Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/AutoClose'
 Plugin 'vim-scripts/matchit.zip'
 Plugin 'vim-scripts/taglist.vim'
-Plugin 'vim-scripts/OmniCppComplete'
 Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe', {'pinned': 1}
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'marijnh/tern_for_vim'
 Plugin 'J-Feng/myvimfiles'
 " }}}
 
@@ -49,13 +51,21 @@ Plugin 'vim-scripts/txt.vim'
 " C
 Plugin 'vim-scripts/a.vim'
 Plugin 'vim-scripts/c.vim'
+"Plugin 'vim-scripts/OmniCppComplete'
 " HTML
 Plugin 'mattn/emmet-vim'
 " Python
 Plugin 'davidhalter/jedi-vim'
+Plugin 'nvie/vim-flake8'
 Plugin 'vim-scripts/python_match.vim'
+Plugin 'vim-scripts/indentpython.vim'
 " HTML & JS
 Plugin 'maksimr/vim-jsbeautify'
+" Elixir
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'slashmili/alchemist.vim'
+" Go
+Plugin 'fatih/vim-go'
 " }}}
 
 
@@ -113,6 +123,7 @@ set ignorecase
 set smartcase
 set incsearch
 set listchars=tab:>.,eol:$
+set noerrorbells
 set number
 set printoptions=left:8pc,right:3pc        " print options
 set ruler
@@ -154,7 +165,9 @@ set fencs=ucs-bom,utf-8,cp936,gb2312,gb18030,gbk,big5,euc-jp,euc-kr,shift-jis,la
 set guifont=YaHei\ Consolas\ Hybrid\ 12
 "set guifont=Monaco\ 14
 " Mac
-"set guifont=Menlo:h15
+if has('mac')
+	set guifont=Menlo:h15
+endif
 " Windows
 "set guifont=Courier\ 10\ Pitch\ 9
 "set guifont=Monospace\ 11
@@ -200,7 +213,7 @@ if has("autocmd")
 		\ exec oldwinnr . " wincmd w"
 endif
 
-set noimdisable
+"set noimdisable
 
 " Cscope settings
 "set cscopetag " use both cscope and ctag for 'ctrl-]', ':ta', and 'vim -t'
@@ -278,7 +291,8 @@ inoremap <silent> <F11>  <Esc><Esc>:Tlist<CR>
 noremap <silent> <F12>  <Esc>:Tagbar<CR>
 inoremap <silent> <F12>  <Esc><Esc>:Tagbar<CR>
 "map <C-F12> :!ctags -R --c-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*<CR>
-map <C-F12> :!ctags --languages=c,c++ --langmap=c:+.h -R --c-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*<CR>
+map <C-F12> :!ctags --languages=c --langmap=c:+.c:+.h -R --c-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*<CR>
+map <C-F11> :!ctags --languages=c++ -R --c++-kinds=+p --fields=+iaS --extra=+q -f ./tags ./*<CR>
 " cscope
 nmap <C-\><C-]> :cstag <C-R>=expand("<cword>")<CR><CR>
 " 's'   symbol: find all references to the token under cursor
@@ -357,6 +371,8 @@ iab zhdate <c-r>=strftime("%F %T")<cr>
 iab endate <c-r>=strftime("%a %b %d %Y %T")<cr>
 " }}}
 
+let python_highlight_all=1
+
 " Plugins' Configuration
 " Airline {{{
 let g:airline#extensions#tabline#enabled = 1
@@ -378,6 +394,7 @@ let g:airline_mode_map = {
     \ 'S'  : 'S',
     \ '' : 'S',
     \ }
+let g:airline_theme='tomorrow'
 " }}}
 " c.vim {{{
 let g:C_Ctrl_j = 'off'
@@ -445,6 +462,9 @@ let g:ycm_warning_symbol = ">*"
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
 let g:ycm_filetype_writelist = {'cpp': 1}
 " }}}
+" vim-indent-guide {{{
+let g:indent_guides_guide_size=1
+" }}}
 " jedi-vim {{{
 let g:jedi#completions_enabled = 0
 " }}}
@@ -464,6 +484,19 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " NERDTree {{{
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
+" vim-jsbeautify {{{
+"map <c-f> :call JsBeautify()<cr>
+autocmd FileType javascript noremap <buffer> <c-f> :call JsBeautify()<cr>
+autocmd FileType json noremap <buffer> <c-f> :call JsonBeautify()<cr>
+autocmd FileType jsx noremap <buffer> <c-f> :call JsxBeautify()<cr>
+autocmd FileType html noremap <buffer> <c-f> :call HtmlBeautify()<cr>
+autocmd FileType css noremap <buffer> <c-f> :call CSSBeautify()<cr>
+
+autocmd FileType javascript vnoremap <buffer>  <c-f> :call RangeJsBeautify()<cr>
+autocmd FileType json vnoremap <buffer> <c-f> :call RangeJsonBeautify()<cr>
+autocmd FileType jsx vnoremap <buffer> <c-f> :call RangeJsxBeautify()<cr>
+autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
+autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
 " }}}
 " Copy from c.vim {{{
 "-------------------------------------------------------------------------------
