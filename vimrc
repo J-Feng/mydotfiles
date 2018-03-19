@@ -431,6 +431,7 @@ let g:auto_striptrail = "python,c,cpp,java,php,html"
 "let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
 "let g:UltiSnipsEditSplit = "vertical"
 let g:UltiSnipsSnippetsDir = "~/.vim/bundle/myvimfiles/UltiSnips"
+vmap <S-s> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
 " }}}
 " YCM {{{
 nnoremap <leader>ygd :YcmCompleter GoToDeclaration<CR>
