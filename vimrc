@@ -234,8 +234,8 @@ map <silent> <leader>ee :e! ~/.vimrc<CR>
 " Fast reloading of .vimrc
 map <silent> <leader>ss :source ~/.vimrc<CR>
 " Indent
-vnoremap <Tab> >gv
-vnoremap <S-Tab> <gv
+xnoremap <Tab> >gv
+xnoremap <S-Tab> <gv
 " Fast saving
 map <silent> <leader>w :w!<CR>
 " close window (conflicts with the KDE setting for calling the process manager)
@@ -429,7 +429,8 @@ let g:auto_striptrail = "python,c,cpp,java,php,html"
 "let g:UltiSnipsExpandTrigger = "<a-tab>"
 "let g:UltiSnipsJumpForwardTrigger = "<a-tab>"
 "let g:UltiSnipsJumpBackwardTrigger = "<c-k>"
-let g:UltiSnipsEditSplit = "vertical"
+"let g:UltiSnipsEditSplit = "vertical"
+let g:UltiSnipsSnippetsDir = "~/.vim/bundle/myvimfiles/UltiSnips"
 " }}}
 " YCM {{{
 nnoremap <leader>ygd :YcmCompleter GoToDeclaration<CR>
