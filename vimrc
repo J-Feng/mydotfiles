@@ -50,7 +50,7 @@ Plugin 'vim-scripts/txt.vim'
 " Language Special {{{
 " C
 Plugin 'vim-scripts/a.vim'
-Plugin 'vim-scripts/c.vim'
+Plugin 'vim-scripts/c.vim', {'pinned': 1}
 "Plugin 'vim-scripts/OmniCppComplete'
 " HTML
 Plugin 'mattn/emmet-vim'
@@ -103,6 +103,20 @@ syntax on
 " A map leader
 let mapleader = ","
 let g:mapleader = ","
+
+"--------------------------------------
+" get platform
+"--------------------------------------
+function! MySys()
+    if  has("win16") || has("win32")     || has("win64") ||
+      \ has("win95") || has("win32unix")
+        return "windows"
+    elseif has("mac")
+        return "mac"
+    else
+        return "linux"
+    endif
+endfunction
 
 " Set how many lines of history VIM has to remember
 set history=1000
@@ -161,16 +175,21 @@ set splitbelow
 set fencs=ucs-bom,utf-8,cp936,gb2312,gb18030,gbk,big5,euc-jp,euc-kr,shift-jis,latin1
 "set langmenu=zh_CN.UTF-8
 "set helplang=cn
-" Linux
-set guifont=YaHei\ Consolas\ Hybrid\ 12
-"set guifont=Monaco\ 14
-" Mac
-if has('mac')
-	set guifont=Menlo:h15
+
+if MySys() == "linux"
+    set guifont=YaHei\ Consolas\ Hybrid\ 12
+    "set guifont=Monaco\ 14
+elseif MySys() == "mac"
+    set guifont=Menlo:h15
+elseif MySys() == "windows"
+    set enc=utf-8
+    " Fix MENU crash
+    source $VIMRUNTIME/delmenu.vim
+    set langmenu=zh_CN.CP936
+    source $VIMRUNTIME/menu.vim
+    set helplang=cn
+    set guifont=Source\ Code\ Pro:h13
 endif
-" Windows
-"set guifont=Courier\ 10\ Pitch\ 9
-"set guifont=Monospace\ 11
 
 "set autochdir
 set nobackup
@@ -192,25 +211,25 @@ set laststatus=2
 
 " Special statusbar for special windows
 if has("autocmd")
-	au FileType qf
-		\ if &buftype == "quickfix" |
-		\     setlocal statusline=%2*%-3.3n%0* |
-		\     setlocal statusline+=\ \[Compiler\ Messages\] |
-		\     setlocal statusline+=%=%2*\ %<%P |
-		\ endif
+    au FileType qf
+        \ if &buftype == "quickfix" |
+        \     setlocal statusline=%2*%-3.3n%0* |
+        \     setlocal statusline+=\ \[Compiler\ Messages\] |
+        \     setlocal statusline+=%=%2*\ %<%P |
+        \ endif
 
-	fun! <SID>FixMiniBufExplorerTitle()
-		if "-MiniBufExplorer-" == bufname("%")
-			setlocal statusline=%2*%-3.3n%0*
-			setlocal statusline+=\[Buffers\]
-		setlocal statusline+=%=%2*\ %<%P
-		endif
-	endfun
+    fun! <SID>FixMiniBufExplorerTitle()
+        if "-MiniBufExplorer-" == bufname("%")
+            setlocal statusline=%2*%-3.3n%0*
+            setlocal statusline+=\[Buffers\]
+        setlocal statusline+=%=%2*\ %<%P
+        endif
+    endfun
 
-	au BufWinEnter *
-		\ let oldwinnr=winnr() |
-		\ windo call <SID>FixMiniBufExplorerTitle() |
-		\ exec oldwinnr . " wincmd w"
+    au BufWinEnter *
+        \ let oldwinnr=winnr() |
+        \ windo call <SID>FixMiniBufExplorerTitle() |
+        \ exec oldwinnr . " wincmd w"
 endif
 
 "set noimdisable
@@ -226,9 +245,9 @@ let &guicursor = &guicursor . ",a:blinkon0"
 
 " Themes
 "if has("gui_running")
-	colorscheme Tomorrow-Night-Eighties
+    colorscheme Tomorrow-Night-Eighties
 "else
-"	colorscheme Tomorrow-Night-Eighties
+"   colorscheme Tomorrow-Night-Eighties
 "endif
 "colorscheme desertEx
 "colorscheme xoria256
@@ -398,6 +417,11 @@ let g:airline_theme='tomorrow'
 " }}}
 " c.vim {{{
 let g:C_Ctrl_j = 'off'
+let g:C_FormatDate = '%Y-%m-%d'
+let g:C_FormatTime = '%H:%M'
+let g:C_FormatYear = '%Y'
+"let g:C_GlobalTemplateFile = $HOME.'/.vim/bundle/c.vim/c-support/templates/Templates'
+"let g:C_LocalTemplateFile = $HOME.'/.vim/c-support/templates/Templates'
 "let g:C_Styles = {'*.c,*.h' : 'default', '*.cc,*.cpp,*.hh,*.hpp' : 'CPP'}
 " }}}
 " OmniCppComplete {{{
