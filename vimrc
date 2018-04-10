@@ -278,6 +278,8 @@ map <leader>tn :tabnew<CR>
 map <leader>te :tabedit
 map <leader>tc :tabclose<CR>
 map <leader>tm :tabmove<CR>
+map <leader>tl :tabnext<CR>
+map <leader>th :tabprevious<CR>
 
 " Pairs complete
 vnoremap ( s()<Esc>P<Right>%
@@ -492,10 +494,12 @@ let g:indent_guides_guide_size=1
 " jedi-vim {{{
 let g:jedi#completions_enabled = 0
 " }}}
-" ag & ctrlsf {{{
-let g:agprg="/usr/local/bin/ag --vimgrep"
+" ag {{{
+let g:ag_prg="/usr/local/bin/ag --vimgrep"
 let g:ag_working_path_mode="r"
 let g:ag_highlight=1
+" }}}
+" ctrlsf {{{
 nmap     <C-F>f <Plug>CtrlSFPrompt
 vmap     <C-F>f <Plug>CtrlSFVwordPath
 vmap     <C-F>F <Plug>CtrlSFVwordExec
