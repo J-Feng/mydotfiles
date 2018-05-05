@@ -17,10 +17,12 @@ Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'J-Feng/vary.vim'
 Plugin 'dyng/ctrlsf.vim'
+Plugin 'godlygeek/tabular'
 Plugin 'honza/vim-snippets'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 Plugin 'mhinz/vim-startify'
+Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'rking/ag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
@@ -31,9 +33,9 @@ Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/AutoClose'
 Plugin 'vim-scripts/matchit.zip'
 Plugin 'vim-scripts/taglist.vim'
+Plugin 'vim-scripts/xmledit'
 Plugin 'SirVer/ultisnips'
 Plugin 'Valloric/YouCompleteMe', {'pinned': 1}
-Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'J-Feng/myvimfiles'
 " }}}
@@ -486,10 +488,6 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 "let g:ycm_key_invoke_completion = '<C-x>'
 let g:ycm_warning_symbol = ">*"
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-let g:ycm_filetype_writelist = {'cpp': 1}
-" }}}
-" vim-indent-guide {{{
-let g:indent_guides_guide_size=1
 " }}}
 " jedi-vim {{{
 let g:jedi#completions_enabled = 0
@@ -512,6 +510,15 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " NERDTree {{{
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
+" }}}
+" xmledit {{{
+let g:xml_syntax_folding=1
+" }}}
+" vim-indent-guides {{{
+let g:indent_guides_guide_size=1
+hi IndentGuidesOdd ctermbg=black
+hi IndentGuidesEven ctermbg=darkgrey
+" }}}
 " vim-jsbeautify {{{
 "map <c-f> :call JsBeautify()<cr>
 autocmd FileType javascript noremap <buffer> <c-f> :call JsBeautify()<cr>
