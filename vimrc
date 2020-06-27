@@ -1,105 +1,118 @@
-" Vundle Config {{{
+" Plugin Config {{{
 set nocompatible " Not Vi mode compatible, must be the first line
-filetype off     " Vundle required
 
-" Set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+call plug#begin()
 
-" Let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-
-" Keep Plugin commands between vundle#begin/end
 " General Plugins {{{
-Plugin 'bling/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'J-Feng/vary.vim'
-Plugin 'dyng/ctrlsf.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'honza/vim-snippets'
-Plugin 'kien/ctrlp.vim'
-Plugin 'majutsushi/tagbar'
-Plugin 'mhinz/vim-startify'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'rking/ag.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/syntastic'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'tpope/vim-eunuch'
-Plugin 'tpope/vim-repeat'
-Plugin 'tpope/vim-surround'
-Plugin 'vim-scripts/AutoClose'
-Plugin 'vim-scripts/matchit.zip'
-Plugin 'vim-scripts/taglist.vim'
-Plugin 'vim-scripts/xmledit'
-Plugin 'SirVer/ultisnips'
-Plugin 'Valloric/YouCompleteMe', {'pinned': 1}
-Plugin 'marijnh/tern_for_vim'
-Plugin 'J-Feng/myvimfiles'
+Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'J-Feng/vary.vim'
+Plug 'dyng/ctrlsf.vim'
+Plug 'godlygeek/tabular'
+Plug 'honza/vim-snippets'
+Plug 'kien/ctrlp.vim'
+Plug 'majutsushi/tagbar'
+Plug 'mhinz/vim-startify'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'rking/ag.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/syntastic'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-surround'
+Plug 'vim-scripts/Auto-Pairs'
+Plug 'vim-scripts/matchit.zip'
+Plug 'vim-scripts/taglist.vim'
+Plug 'vim-scripts/xmledit'
+Plug 'SirVer/ultisnips'
+Plug 'ycm-core/YouCompleteMe'
+Plug 'marijnh/tern_for_vim'
+Plug 'J-Feng/myvimfiles'
+Plug 'autozimu/LanguageClient-neovim', { 'branch': 'next', 'do': 'bash install.sh' }
 " }}}
 
 " Colors {{{
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'flazz/vim-colorschemes'
+Plug 'altercation/vim-colors-solarized'
+Plug 'joshdick/onedark.vim'
+Plug 'chriskempson/base16-vim'
+Plug 'chriskempson/tomorrow-theme', {'rtp': 'vim/'}
 " }}}
 
 " Syntaxes {{{
-Plugin 'vim-scripts/txt.vim'
+Plug 'vim-scripts/txt.vim'
 " }}}
 
 " Language Special {{{
 " C
-Plugin 'vim-scripts/a.vim'
-Plugin 'vim-scripts/c.vim', {'pinned': 1}
+Plug 'vim-scripts/a.vim'
+Plug 'vim-scripts/c.vim'
 "Plugin 'vim-scripts/OmniCppComplete'
 " HTML
-Plugin 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 " Python
-Plugin 'davidhalter/jedi-vim'
-Plugin 'nvie/vim-flake8'
-Plugin 'vim-scripts/python_match.vim'
-Plugin 'vim-scripts/indentpython.vim'
+Plug 'davidhalter/jedi-vim'
+Plug 'nvie/vim-flake8'
+Plug 'vim-scripts/python_match.vim'
+Plug 'vim-scripts/indentpython.vim'
 " HTML & JS
-Plugin 'maksimr/vim-jsbeautify'
+Plug 'maksimr/vim-jsbeautify'
 " Elixir
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'slashmili/alchemist.vim'
+Plug 'elixir-lang/vim-elixir'
+Plug 'slashmili/alchemist.vim'
 " Go
-Plugin 'fatih/vim-go'
+Plug 'fatih/vim-go'
+" Rust
+Plug 'rust-lang/rust.vim'
 " }}}
 
+" Make sure you use single quotes
+" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+"Plug 'junegunn/vim-easy-align'
+" Any valid git URL is allowed
+"Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+" Multiple Plug commands can be written in a single line using | separators
+"Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+" On-demand loading
+"Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+" Using a non-master branch
+"Plug 'rdnetto/YCM-Generator', { 'branch': 'stable' }
+" Using a tagged release; wildcard allowed (requires git 1.9.2 or above)
+"Plug 'fatih/vim-go', { 'tag': '*' }
+" Plugin options
+"Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+" Plugin outside ~/.vim/plugged with post-update hook
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+" Unmanaged plugin (manually installed and updated)
+"Plug '~/my-prototype-plugin'
 
+call plug#end()
 
-" Git plugins not hosted on GitHub
-"Plugin 'git://git.wincent.com/command-t.git'
-
-" Git repos on your local machine
-"Plugin 'file:///home/fj/gitroot/plugin'
-
-" The sparkup vim script is in a subdirectory of this repo called vim.
-" Pass the path to set the runtimepath properly.
-"Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
-" Avoid a name conflict with L9
-"Plugin 'user/L9', {'name': 'newL9'}
-
-call vundle#end()
-filetype plugin indent on
-
+" https://github.com/junegunn/vim-plug
 " Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
+" :PlugInstall [name ...] [#threads]
+" :PlugUpdate [name ...] [#threads]
+" :PlugClean[!] - Remove unlisted plugins (bang version will clean without prompt)
+" :PlugUpgrade  - Upgrade vim-plug itself
+" :PlugStatus
+" :PlugDiff
+" :PlugSnapshot[!] [output path] - Generate script for restoring the current snapshot of the plugins
+" Options
+" branch/tag/commit - Branch/tag/commit of the repo to use
+" rtp - Subdirectory that contains Vim plugin
+" dir - Custom directory for the plugin
+" as  - Use different name for the plugin
+" do  - Post-update hook (string or funcref)
+" on  - On-demand loading: Commands or <Plug>-mappings
+" for - On-demand loading: File types
+" frozen - Do not update unless explicitly specified
 " }}}
 
 " General Settings {{{
 
 " Enable filetype plugin
+filetype plugin indent on
 syntax on
 
 " A map leader
@@ -246,11 +259,13 @@ set cscopeverbose " show msg when any other cscope db added
 let &guicursor = &guicursor . ",a:blinkon0"
 
 " Themes
-"if has("gui_running")
+if has("gui_running")
+    colorscheme onedark
+    let g:airline_theme='onedark'
+else
     colorscheme Tomorrow-Night-Eighties
-"else
-"   colorscheme Tomorrow-Night-Eighties
-"endif
+    let g:airline_theme='tomorrow'
+endif
 "colorscheme desertEx
 "colorscheme xoria256
 "colorscheme wombat256
@@ -304,9 +319,7 @@ noremap <space> <c-f>
 vnoremap <F2> "+y
 noremap <F3> <Esc>"+p
 inoremap <F3> <Esc><Esc>"+p
-noremap <F5> :%s/$//g<CR>
-noremap <silent> <F9>  <Esc>:SyntasticCheck<CR>
-inoremap <silent> <F9>  <Esc><Esc>:SyntasticCheck<CR>
+noremap <leader><F5> :%s/$//g<CR>
 noremap <silent> <F10>  <Esc>:NERDTree<CR>
 inoremap <silent> <F10>  <Esc><Esc>:NERDTree<CR>
 noremap <silent> <F11>  <Esc>:Tlist<CR>
@@ -417,8 +430,13 @@ let g:airline_mode_map = {
     \ 'S'  : 'S',
     \ '' : 'S',
     \ }
-let g:airline_theme='tomorrow'
 " }}}
+
+" a.vim {{{
+let g:alternateExtensions_cxx = "hxx,hpp,h"
+let g:alternateExtensions_hxx = "cxx,cpp,cc"
+" }}}
+
 " c.vim {{{
 let g:C_Ctrl_j = 'off'
 let g:C_FormatDate = '%Y-%m-%d'
@@ -467,7 +485,7 @@ let Tlist_Process_File_Always = 0
 let Tlist_Inc_Winwidth = 0
 " }}}
 " Vary.vim {{{
-let g:auto_striptrail = "python,c,cpp,java,php,html"
+let g:auto_striptrail = "python,c,cpp,java,php,html,rust"
 "let g:auto_striptab = "python,ruby,cpp"
 " }}}
 " ultisnips {{{
@@ -510,6 +528,8 @@ inoremap <C-F>t <Esc>:CtrlSFToggle<CR>
 " NERDTree {{{
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
+let NERDTreeIgnore=['\.o$[[file]]', '\.lo[[file]]']
+let NERDTreeAutoCenter=1
 " }}}
 " xmledit {{{
 let g:xml_syntax_folding=1
@@ -532,6 +552,36 @@ autocmd FileType json vnoremap <buffer> <c-f> :call RangeJsonBeautify()<cr>
 autocmd FileType jsx vnoremap <buffer> <c-f> :call RangeJsxBeautify()<cr>
 autocmd FileType html vnoremap <buffer> <c-f> :call RangeHtmlBeautify()<cr>
 autocmd FileType css vnoremap <buffer> <c-f> :call RangeCSSBeautify()<cr>
+" }}}
+" LanguageClient-neovim {{{
+" Required for operations modifying multiple buffers like rename.
+set hidden
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ }
+let g:LanguageClient_rootMarkers = {
+    \ 'rust': ['Cargo.toml'],
+    \}
+
+    "\ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+    "\ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+    "\ 'python': ['/usr/local/bin/pyls'],
+    "\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" rust.vim {{{
+let g:ftplugin_rust_source_path = $HOME.'/mywork/rust'
+" }}}
+
+" syntastic {{{
+let g:syntastic_mode_map = {
+    \ "mode": "active",
+    \ "active_filetypes": [],
+    \ "passive_filetypes": ["rust", "python"] }
+" }}}
+" Or map each action separately
+"nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+"nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+"nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 " }}}
 " Copy from c.vim {{{
 "-------------------------------------------------------------------------------
