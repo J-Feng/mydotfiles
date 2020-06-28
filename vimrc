@@ -47,11 +47,9 @@ Plug 'vim-scripts/txt.vim'
 " C
 Plug 'vim-scripts/a.vim'
 Plug 'vim-scripts/c.vim'
-"Plugin 'vim-scripts/OmniCppComplete'
 " HTML
 Plug 'mattn/emmet-vim'
 " Python
-Plug 'davidhalter/jedi-vim'
 Plug 'nvie/vim-flake8'
 Plug 'vim-scripts/python_match.vim'
 Plug 'vim-scripts/indentpython.vim'
@@ -400,6 +398,9 @@ autocmd bufNewFile,BufRead set tags+=./tags
 " For input method auto switch
 autocmd! InsertLeave * set imdisable|set iminsert=0
 autocmd! InsertEnter * set noimdisable|set iminsert=0
+
+autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 " }}}
 
 " Abbreviations {{{
@@ -446,34 +447,6 @@ let g:C_FormatYear = '%Y'
 "let g:C_LocalTemplateFile = $HOME.'/.vim/c-support/templates/Templates'
 "let g:C_Styles = {'*.c,*.h' : 'default', '*.cc,*.cpp,*.hh,*.hpp' : 'CPP'}
 " }}}
-" OmniCppComplete {{{
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
-set completeopt=menu,menuone
-
-let OmniCpp_GlobalScopeSearch = 1 "default
-let OmniCpp_NamespaceSearch = 2
-let OmniCpp_DisplayMode = 0 "default
-let OmniCpp_ShowScopeInAbbr = 1
-let OmniCpp_ShowPrototypeInAbbr = 1
-let OmniCpp_ShowAccess = 1 "default
-let OmniCpp_MayCompleteDot = 1 "default
-let OmniCpp_MayCompleteArrow = 1 "default
-let OmniCpp_MayCompleteScope = 1
-let OmniCpp_SelectFirstItem = 2
-let OmniCpp_LocalSearchDecl = 1
-
-"Setup the tab key to do autocompletion
-function! CompleteTab()
-  let prec = strpart( getline('.'), 0, col('.')-1 )
-  if prec =~ '^\s*$' || prec =~ '\s$'
-    return "\<tab>"
-  else
-    return "\<c-x>\<c-o>"
-  endif
-endfunction
-"inoremap <tab> <c-r>=CompleteTab()<cr>
-" }}}
 " TagList {{{
 let Tlist_GainFocus_On_ToggleOpen = 1
 let Tlist_Close_On_Select = 0
@@ -497,6 +470,7 @@ let g:UltiSnipsSnippetsDir = "~/.vim/bundle/myvimfiles/UltiSnips"
 vmap <S-s> :call UltiSnips#SaveLastVisualSelection()<CR>gvs
 " }}}
 " YCM {{{
+set completeopt=menu,menuone
 nnoremap <leader>ygd :YcmCompleter GoToDeclaration<CR>
 nnoremap <leader>ygi :YcmCompleter GoToDefinition<CR>
 nnoremap <leader>ygg :YcmCompleter GoToDefinitionElseDeclaration<CR>
@@ -506,9 +480,6 @@ let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
 "let g:ycm_key_invoke_completion = '<C-x>'
 let g:ycm_warning_symbol = ">*"
 let g:ycm_global_ycm_extra_conf = '~/.ycm_extra_conf.py'
-" }}}
-" jedi-vim {{{
-let g:jedi#completions_enabled = 0
 " }}}
 " ag {{{
 let g:ag_prg="/usr/local/bin/ag --vimgrep"
